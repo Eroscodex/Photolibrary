@@ -399,6 +399,67 @@
     <span id="toast-message"></span>
   </div>
 
+  <!-- Mobile Bottom Navigation -->
+  <nav class="mobile-bottom-nav" id="mobile-bottom-nav">
+    <button class="nav-item active" id="nav-home" title="Home">
+      <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+      <span>Home</span>
+    </button>
+    <button class="nav-item" id="nav-memories" title="Memories">
+      <svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+      <span>Memories</span>
+    </button>
+    <button class="nav-item" id="nav-videos" title="Videos">
+      <svg viewBox="0 0 24 24"><path d="M15 8v8H1V8h14m1-2H0v12h16V6zm3-5v17h4V1h-4z"/></svg>
+      <span>Videos</span>
+    </button>
+    <button class="nav-item" id="nav-favorites" title="Favorites">
+      <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+      <span>Favorites</span>
+    </button>
+  </nav>
+
+  <!-- Mobile Menu Toggle Script -->
+  <script>
+    // Handle mobile menu toggle
+    const menuToggleBtn = document.getElementById('menu-toggle-btn');
+    const headerMenuContent = document.getElementById('header-menu-content');
+    
+    if (menuToggleBtn && headerMenuContent) {
+      menuToggleBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        headerMenuContent.classList.toggle('active');
+      });
+
+      // Close menu when clicking outside
+      document.addEventListener('click', function(e) {
+        if (!e.target.closest('.header-bar')) {
+          headerMenuContent.classList.remove('active');
+        }
+      });
+
+      // Close menu when clicking on menu items
+      headerMenuContent.addEventListener('click', function(e) {
+        if (e.target.tagName === 'BUTTON' && e.target !== menuToggleBtn) {
+          headerMenuContent.classList.remove('active');
+        }
+      });
+    }
+
+    // Handle mobile bottom nav clicks
+    const navItems = document.querySelectorAll('.mobile-bottom-nav .nav-item');
+    navItems.forEach(item => {
+      item.addEventListener('click', function() {
+        if (typeof window.handleMobileNavSelection === 'function') {
+          window.handleMobileNavSelection(this.id);
+        } else {
+          navItems.forEach(nav => nav.classList.remove('active'));
+          this.classList.add('active');
+        }
+      });
+    });
+  </script>
+
   <!-- YouTube Iframe API Dynamically loaded in JS -->
   <script src="app.js"></script>
 </body>

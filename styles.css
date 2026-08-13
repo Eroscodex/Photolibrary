@@ -62,8 +62,9 @@ body {
   flex-direction: column;
   align-items: center;
   transition: background 0.3s, color 0.3s;
-  padding: 20px;
+  padding: 0;
   overflow-x: hidden;
+  padding-bottom: 60px;
 }
 
 /* Background gradient blobs for aesthetic look */
@@ -106,7 +107,7 @@ body::after {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 0;
+  padding: 10px 20px;
   border-bottom: 1px solid var(--border-color);
 }
 
@@ -1130,6 +1131,52 @@ input:checked + .slider:before {
   margin-top: 15px;
 }
 
+/* Mobile Bottom Navigation Bar */
+.mobile-bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 60px;
+  background: var(--card-bg);
+  border-top: 1px solid var(--border-color);
+  display: none;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 50;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.mobile-bottom-nav .nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 8px;
+  border: none;
+  background: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  transition: color 0.2s;
+  flex: 1;
+  height: 100%;
+}
+
+.mobile-bottom-nav .nav-item:hover,
+.mobile-bottom-nav .nav-item.active {
+  color: var(--violet-accent);
+}
+
+.mobile-bottom-nav .nav-item svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+
 /* Toast container */
 .toast {
   position: fixed;
@@ -1193,273 +1240,335 @@ input:checked + .slider:before {
   }
 }
 
+/* MOBILE-FIRST DESIGN - Primary mobile experience */
 @media (max-width: 900px) {
+  /* Compact header for mobile */
   body {
-    padding: 10px;
+    padding: 0 !important;
+    padding-bottom: 70px !important;
   }
 
   .header-bar {
-    flex-direction: column;
-    gap: 8px;
-    align-items: flex-start;
-    padding-bottom: 10px;
+    padding: 12px 16px !important;
+    height: 52px !important;
+    border-bottom: 1px solid var(--border-color) !important;
+    gap: 12px !important;
   }
 
-  /* Show Menu Toggle on Mobile */
+  .brand-title {
+    font-size: 1rem !important;
+    min-width: 120px !important;
+  }
+
   .menu-toggle-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--card-bg);
-    border: 1px solid var(--border-color);
-    color: var(--text-color);
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    cursor: pointer;
-    transition: all 0.2s;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    display: flex !important;
+    width: 40px !important;
+    height: 40px !important;
+    flex-shrink: 0 !important;
   }
 
-  .menu-toggle-btn:hover {
-    border-color: var(--violet-accent);
-    color: var(--violet-accent);
+  /* Show mobile bottom navigation */
+  .mobile-bottom-nav {
+    display: flex !important;
   }
 
-  /* Collapsible Menu Drawer */
+  /* Hide top menu controls on mobile */
   .header-menu-content {
-    display: none;
-    width: 100%;
-    flex-direction: column !important;
-    align-items: stretch !important;
-    gap: 10px !important;
-    margin-top: 10px;
-    border-top: 1px dashed var(--border-color);
-    padding-top: 10px;
+    display: none !important;
   }
 
   .header-menu-content.active {
     display: flex !important;
-  }
-
-  /* Stack and clean sub-controls inside menu */
-  .header-menu-content .header-divider {
-    display: none !important;
+    position: absolute !important;
+    top: 52px !important;
+    left: 0 !important;
+    right: 0 !important;
+    background: var(--card-bg) !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    border-bottom: 1px solid var(--border-color) !important;
+    z-index: 40 !important;
+    padding: 12px 16px !important;
+    gap: 12px !important;
+    align-items: stretch !important;
   }
 
   #owner-header-controls {
-    flex-direction: column !important;
-    align-items: stretch !important;
-    gap: 10px !important;
+    display: none !important;
+  }
+
+  /* App container padding */
+  .app-container {
     width: 100% !important;
-    display: none; /* Controlled by JS auth state */
+    max-width: 100% !important;
+    gap: 0 !important;
+    padding: 0 !important;
   }
 
-  #auth-controls {
-    justify-content: center !important;
-    width: 100% !important;
-  }
-
-  .theme-toggle-btn {
-    align-self: center !important;
-  }
-
+  /* Full-width photo display */
   .book-wrapper {
-    min-height: auto;
-    height: auto;
-    padding: 10px 0;
-    perspective: 1500px;
+    padding: 0 !important;
+    min-height: 0 !important;
   }
 
-  /* Make the book tall and occupy full width on mobile */
   .book {
-    width: 95vw !important;
-    height: 520px !important;
-    transform: none !important;
-    box-shadow: var(--book-shadow) !important;
-    border: 1px solid var(--border-color) !important;
-    background: var(--card-bg) !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
   }
 
   .book.closed {
-    width: 75vw !important;
-    height: 520px !important;
-    transform: rotateY(10deg) !important;
+    width: 100% !important;
+    height: auto !important;
+    transform: none !important;
   }
 
   .book-spine {
-    width: 15px !important;
+    display: none !important;
   }
 
-  /* Keep pages side-by-side */
+  /* Full-screen cover */
+  .book-cover-front {
+    border-radius: 0 !important;
+    border: none !important;
+    min-height: 400px !important;
+  }
+
+  /* Pages display side-by-side or stacked */
   .book-pages {
     display: grid !important;
-    grid-template-columns: 1fr 1fr !important;
-    height: 100% !important;
+    grid-template-columns: 1fr !important;
+    gap: 0 !important;
+    height: auto !important;
   }
 
   .book-page {
-    padding: 12px 8px !important;
+    padding: 16px !important;
+    border: none !important;
+    border-bottom: 1px solid var(--border-color) !important;
+    overflow-y: auto !important;
+    max-height: none !important;
+  }
+
+  .book-page-left,
+  .book-page-right {
+    border: none !important;
+    border-bottom: 1px solid var(--border-color) !important;
+  }
+
+  /* Remove page seam */
+  .book-pages::after {
+    display: none !important;
+  }
+
+  /* Page footer improvements */
+  .page-number-footer {
+    margin-top: 20px !important;
     font-size: 0.7rem !important;
   }
 
-  /* Prevent Soundtrack title and Edit button collision */
-  .welcome-panel h3, .book-page h3 {
-    font-size: 0.65rem !important;
-    letter-spacing: 0.5px !important;
+  /* Full-width media cards in grid */
+  .media-container {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+    flex: unset !important;
+    height: auto !important;
   }
 
-  #manage-playlist-btn {
-     padding: 2px 6px !important;
-     font-size: 0.6rem !important;
+  .media-card {
+    width: 100% !important;
+    height: 100% !important;
+    padding: 6px !important;
+    gap: 4px !important;
   }
 
-  /* Shrink turntable player elements to fit */
+  /* Nearly square thumbnails */
+  .card-frame {
+    aspect-ratio: 1 / 1 !important;
+    height: auto !important;
+    min-height: 140px !important;
+  }
+
+  .card-details {
+    font-size: 0.6rem !important;
+  }
+
+  .card-title {
+    font-size: 0.7rem !important;
+  }
+
+  .card-caption {
+    font-size: 0.55rem !important;
+    display: none !important;
+  }
+
+  .card-actions {
+    display: none !important;
+  }
+
+  .card-badge {
+    font-size: 0.5rem !important;
+    top: 4px !important;
+    right: 4px !important;
+  }
+
+  /* Music player horizontal layout */
   .music-player-container {
-    padding: 8px !important;
-    gap: 6px !important;
-    margin: 4px 0 !important;
+    padding: 10px !important;
+    gap: 8px !important;
   }
 
   .turntable-box {
-    gap: 8px !important;
+    flex-direction: row !important;
+    gap: 10px !important;
+    align-items: center !important;
   }
 
   .vinyl-disc {
     width: 50px !important;
     height: 50px !important;
+    flex-shrink: 0 !important;
   }
 
-  .vinyl-center {
-    width: 14px !important;
-    height: 14px !important;
+  .song-info {
+    gap: 2px !important;
+    flex: 1 !important;
   }
 
-  .vinyl-center::after {
-    width: 3px !important;
-    height: 3px !important;
-  }
-
-  .song-details h3 {
+  .current-song-title {
     font-size: 0.75rem !important;
+    font-weight: 600 !important;
   }
 
-  .song-details p {
-    font-size: 0.6rem !important;
+  .current-song-artist {
+    font-size: 0.65rem !important;
+  }
+
+  .player-controls-row {
+    width: 100% !important;
+    gap: 6px !important;
+    margin-top: 8px !important;
   }
 
   .song-progress-bar {
     height: 3px !important;
-  }
-
-  .player-controls {
-    gap: 8px !important;
-  }
-
-  .control-btn svg {
-    width: 10px !important;
-    height: 10px !important;
+    flex: 1 !important;
   }
 
   #player-time {
-    font-size: 0.55rem !important;
+    font-size: 0.6rem !important;
+    min-width: auto !important;
   }
 
-  /* Shrink tracklist */
+  /* Hide tracklist or make compact */
+  .tracklist-container {
+    max-height: 120px !important;
+    overflow-y: auto !important;
+    margin-top: 8px !important;
+  }
+
   .tracklist-item {
-    padding: 3px 5px !important;
+    padding: 3px 6px !important;
     font-size: 0.6rem !important;
   }
 
-  .tracklist-item .visualizer-bar {
-    width: 2px !important;
+  /* Album header */
+  .album-header-bar {
+    gap: 8px !important;
+    margin-bottom: 12px !important;
   }
 
-  /* Wrap filter buttons to fit narrow pages */
-  .filter-controls {
-    flex-wrap: wrap !important;
+  .filter-group {
     gap: 4px !important;
-    margin-bottom: 8px !important;
+    flex-wrap: wrap !important;
   }
 
   .filter-btn {
-    padding: 3px 6px !important;
-    font-size: 0.58rem !important;
+    padding: 4px 8px !important;
+    font-size: 0.6rem !important;
   }
 
-  /* Cards styling */
-  .media-container {
-    flex-direction: column !important;
-    gap: 10px !important;
-    align-items: center !important;
-  }
-
-  .media-card {
-    width: 100% !important;
-    padding: 8px !important;
-    gap: 5px !important;
-  }
-
-  .card-frame {
-    height: auto !important;
-    aspect-ratio: 4/3 !important;
-  }
-
-  .card-frame img, .card-frame video {
-    max-height: 130px !important;
-  }
-
-  .media-card h3 {
-    font-size: 0.75rem !important;
-  }
-
-  .media-card p {
-    font-size: 0.65rem !important;
-  }
-
-  .card-badge {
-    font-size: 0.55rem !important;
-    padding: 2px 5px !important;
-  }
-
-  /* Better touch targets for tablet */
+  /* Buttons sizing */
   .btn, .control-btn, .filter-btn {
-    min-height: 42px !important;
-    min-width: 42px !important;
+    padding: 10px 12px !important;
+    font-size: 0.8rem !important;
   }
 
-  /* Improve modal on tablet */
+  /* Modal responsive */
   .modal-card {
-    max-width: 85vw !important;
+    max-width: 90vw !important;
+    width: calc(100vw - 20px) !important;
+    margin: 0 10px !important;
+  }
+
+  .modal-body {
+    padding: 16px !important;
   }
 
   .input-field {
     font-size: 16px !important;
-    padding: 10px 12px !important;
+    padding: 12px !important;
+    width: 100% !important;
   }
 
-  /* Toast positioning on tablet */
+  /* Toast on mobile */
   .toast {
-    bottom: 20px !important;
-    right: 20px !important;
+    left: 12px !important;
+    right: 12px !important;
+    bottom: 80px !important;
   }
 
-  /* Ensure proper header layout */
-  .header-bar:not(.active) {
-    flex-wrap: wrap !important;
+  /* Hide unnecessary elements */
+  .blank-page-placeholder {
+    min-height: 200px !important;
+    padding: 16px !important;
+  }
+}
+
+/* Ultra-compact for very small phones (max-width: 480px) */
+@media (max-width: 480px) {
+  .header-bar {
+    padding: 10px 12px !important;
+    height: 48px !important;
   }
 
   .brand-title {
-    font-size: 1.2rem !important;
+    font-size: 0.95rem !important;
   }
 
-  /* Book sizing optimization */
-  .book {
-    height: 480px !important;
+  .media-container {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 4px !important;
   }
 
-  .book.closed {
-    height: 480px !important;
+  .card-frame {
+    min-height: 120px !important;
+  }
+
+  .mobile-bottom-nav {
+    height: 56px !important;
+  }
+
+  .mobile-bottom-nav .nav-item {
+    font-size: 0.55rem !important;
+  }
+
+  .mobile-bottom-nav .nav-item svg {
+    width: 18px !important;
+    height: 18px !important;
+  }
+
+  .vinyl-disc {
+    width: 40px !important;
+    height: 40px !important;
+  }
+
+  body {
+    padding-bottom: 60px !important;
   }
 }
 
@@ -1480,531 +1589,5 @@ input:checked + .slider:before {
   }
   100% {
     height: 100%;
-  }
-}
-
-/* Enhanced Mobile Responsive (max-width: 600px) */
-@media (max-width: 600px) {
-  /* Base mobile adjustments */
-  body {
-    padding: 4px;
-    font-size: 12px;
-    overflow-x: hidden;
-  }
-
-  /* Header improvements */
-  .header-bar {
-    flex-direction: row !important;
-    justify-content: space-between !important;
-    align-items: center !important;
-    gap: 0 !important;
-    padding: 8px 0 !important;
-  }
-
-  .brand-title {
-    font-size: 1rem !important;
-  }
-
-  .header-menu-content {
-    width: 100% !important;
-    margin-top: 8px !important;
-    padding-top: 8px !important;
-  }
-
-  /* Touch targets - minimum 44px for mobile */
-  .menu-toggle-btn,
-  .theme-toggle-btn,
-  .btn,
-  .control-btn,
-  .filter-btn {
-    min-height: 40px !important;
-    min-width: 40px !important;
-    padding: 10px 12px !important;
-  }
-
-  .btn-primary {
-    padding: 12px 16px !important;
-    font-size: 0.9rem !important;
-  }
-
-  /* Modal responsive */
-  .modal-card {
-    max-width: 90vw !important;
-    margin: 0 10px !important;
-    border-radius: 12px !important;
-  }
-
-  .modal-header {
-    padding: 12px 16px !important;
-  }
-
-  .modal-header h3 {
-    font-size: 0.95rem !important;
-  }
-
-  .modal-body {
-    padding: 16px !important;
-    gap: 12px !important;
-  }
-
-  .modal-footer {
-    padding: 12px 16px !important;
-    flex-wrap: wrap !important;
-    gap: 8px !important;
-  }
-
-  /* Form inputs - full width */
-  .input-field {
-    width: 100% !important;
-    padding: 12px !important;
-    font-size: 16px !important; /* Prevents zoom on iOS */
-  }
-
-  .form-group {
-    margin-bottom: 4px !important;
-  }
-
-  /* Page navigation input */
-  .page-jump-wrapper {
-    flex-wrap: wrap !important;
-    width: 100% !important;
-    gap: 8px !important;
-  }
-
-  .page-jump-input {
-    flex: 1 !important;
-    min-width: 60px !important;
-    padding: 8px 10px !important;
-    font-size: 0.9rem !important;
-  }
-
-  .page-slider {
-    width: 100% !important;
-  }
-
-  /* Storage box responsive */
-  .storage-box {
-    width: 100% !important;
-    flex-direction: column !important;
-    gap: 6px !important;
-    align-items: flex-start !important;
-  }
-
-  .storage-track {
-    width: 100% !important;
-  }
-
-  /* Book dimensions for mobile */
-  .book-wrapper {
-    min-height: auto !important;
-    width: 100% !important;
-    overflow-x: hidden !important;
-  }
-
-  .book {
-    width: calc(100vw - 8px) !important;
-    max-width: calc(100% - 8px) !important;
-    height: auto !important;
-    max-height: none !important;
-    margin: 0 0 !important;
-    border-radius: 8px !important;
-    overflow: hidden !important;
-  }
-
-  .book.closed {
-    width: calc(100vw - 8px) !important;
-    height: 350px !important;
-    transform: rotateY(8deg) !important;
-  }
-
-  .book-spine {
-    width: 12px !important;
-  }
-
-  /* Page content optimization */
-  .book-page {
-    padding: 8px 5px !important;
-    font-size: 0.6rem !important;
-    overflow-y: auto !important;
-    max-height: 80vh !important;
-  }
-
-  .book-page-left,
-  .book-page-right {
-    border-right: 1px solid var(--border-color) !important;
-  }
-
-  /* Header titles on mobile */
-  .welcome-header h2,
-  .album-header-bar h3 {
-    font-size: 0.8rem !important;
-    margin-bottom: 4px !important;
-  }
-
-  .welcome-header p {
-    font-size: 0.65rem !important;
-  }
-
-  /* Music player ultra-compact */
-  .music-player-container {
-    padding: 4px !important;
-    gap: 3px !important;
-    margin: 1px 0 !important;
-  }
-
-  .turntable-box {
-    flex-direction: row !important;
-    gap: 4px !important;
-    align-items: flex-start !important;
-  }
-
-  .vinyl-disc {
-    width: 40px !important;
-    height: 40px !important;
-    align-self: center !important;
-  }
-
-  .vinyl-center {
-    width: 12px !important;
-    height: 12px !important;
-  }
-
-  .song-info {
-    gap: 1px !important;
-  }
-
-  .current-song-title {
-    font-size: 0.7rem !important;
-  }
-
-  .current-song-artist {
-    font-size: 0.6rem !important;
-  }
-
-  .playlist-select {
-    font-size: 0.75rem !important;
-    padding: 8px !important;
-  }
-
-  .player-controls-row {
-    gap: 6px !important;
-    flex-wrap: nowrap !important;
-    overflow-x: auto !important;
-  }
-
-  .control-btn {
-    width: 32px !important;
-    height: 32px !important;
-    flex-shrink: 0 !important;
-  }
-
-  .control-btn svg {
-    width: 14px !important;
-    height: 14px !important;
-  }
-
-  .song-progress-bar {
-    height: 2px !important;
-    min-width: 60px !important;
-    flex: 0 1 auto !important;
-  }
-
-  /* Tracklist compact */
-  .tracklist-container {
-    max-height: 150px !important;
-    overflow-y: auto !important;
-  }
-
-  .tracklist-item {
-    padding: 2px 4px !important;
-    font-size: 0.55rem !important;
-  }
-
-  .tracklist-item .visualizer-bar {
-    width: 1.5px !important;
-    height: auto !important;
-  }
-
-  /* Album filters and cards */
-  .album-header-bar {
-    flex-direction: column !important;
-    align-items: flex-start !important;
-    gap: 8px !important;
-    margin-bottom: 10px !important;
-  }
-
-  .filter-group {
-    width: 100% !important;
-    flex-wrap: wrap !important;
-    gap: 4px !important;
-  }
-
-  .filter-btn {
-    padding: 4px 8px !important;
-    font-size: 0.6rem !important;
-    flex: 0 1 auto !important;
-  }
-
-  .media-container {
-    flex-direction: column !important;
-    gap: 8px !important;
-  }
-
-  .media-card {
-    width: 100% !important;
-    padding: 6px !important;
-    gap: 4px !important;
-  }
-
-  .card-frame {
-    aspect-ratio: 4/3 !important;
-    height: 100px !important;
-    min-height: auto !important;
-  }
-
-  .card-details {
-    gap: 2px !important;
-  }
-
-  .card-title {
-    font-size: 0.75rem !important;
-    line-height: 1.2 !important;
-  }
-
-  .card-caption {
-    font-size: 0.6rem !important;
-    line-height: 1.2 !important;
-  }
-
-  .card-meta {
-    font-size: 0.55rem !important;
-  }
-
-  .card-badge {
-    top: 8px !important;
-    right: 8px !important;
-    font-size: 0.5rem !important;
-    padding: 2px 4px !important;
-  }
-
-  .card-actions {
-    gap: 6px !important;
-    margin-top: 3px !important;
-    padding-top: 4px !important;
-  }
-
-  .action-icon-btn {
-    width: 28px !important;
-    height: 28px !important;
-    padding: 2px !important;
-  }
-
-  .action-icon-btn svg {
-    width: 14px !important;
-    height: 14px !important;
-  }
-
-  /* Blank page placeholder */
-  .blank-page-placeholder {
-    padding: 20px 10px !important;
-    gap: 8px !important;
-  }
-
-  .blank-page-placeholder svg {
-    width: 28px !important;
-    height: 28px !important;
-  }
-
-  .blank-page-placeholder h4 {
-    font-size: 0.8rem !important;
-  }
-
-  .blank-page-placeholder p {
-    font-size: 0.65rem !important;
-  }
-
-  /* Navigation controls */
-  .nav-controls-container {
-    gap: 8px !important;
-    margin-top: 10px !important;
-  }
-
-  .nav-controls-container .btn {
-    flex: 1 !important;
-    font-size: 0.8rem !important;
-    padding: 10px 8px !important;
-  }
-
-  /* Toast notifications */
-  .toast {
-    bottom: 15px !important;
-    right: 12px !important;
-    left: 12px !important;
-    max-width: none !important;
-    width: auto !important;
-    font-size: 0.8rem !important;
-    padding: 10px 12px !important;
-  }
-
-  /* Owner controls stack vertically */
-  #owner-header-controls {
-    flex-direction: column !important;
-    align-items: stretch !important;
-    gap: 8px !important;
-  }
-
-  .header-divider {
-    display: none !important;
-  }
-
-  #auth-controls {
-    justify-content: center !important;
-    width: 100% !important;
-  }
-
-  /* Upload dropzone */
-  .upload-dropzone {
-    padding: 20px 12px !important;
-  }
-
-  .upload-dropzone svg {
-    width: 28px !important;
-    height: 28px !important;
-  }
-
-  .upload-dropzone p {
-    font-size: 0.75rem !important;
-  }
-
-  /* Page footer */
-  .page-number-footer {
-    padding-top: 10px !important;
-    font-size: 0.65rem !important;
-    gap: 8px !important;
-    flex-wrap: wrap !important;
-  }
-
-  /* Close button improvements */
-  #close-book-btn {
-    width: 100% !important;
-    padding: 10px !important;
-    font-size: 0.8rem !important;
-  }
-}
-
-/* Ultra-small phone screens (max-width: 375px) */
-@media (max-width: 375px) {
-  body {
-    padding: 2px !important;
-    font-size: 11px !important;
-    overflow-x: hidden !important;
-  }
-
-  .app-container {
-    gap: 12px !important;
-  }
-
-  .brand-title {
-    font-size: 0.9rem !important;
-  }
-
-  .book {
-    width: calc(100vw - 4px) !important;
-    margin: 0 0 !important;
-    height: auto !important;
-  }
-
-  .book.closed {
-    width: calc(100vw - 4px) !important;
-    height: 320px !important;
-  }
-
-  .book-page {
-    padding: 8px 4px !important;
-    font-size: 0.6rem !important;
-  }
-
-  .btn, .control-btn {
-    padding: 8px 10px !important;
-    font-size: 0.75rem !important;
-  }
-
-  .btn-primary {
-    padding: 10px 12px !important;
-    font-size: 0.8rem !important;
-  }
-
-  .modal-card {
-    max-width: 95vw !important;
-  }
-
-  .music-player-container {
-    padding: 4px !important;
-  }
-
-  .vinyl-disc {
-    width: 36px !important;
-    height: 36px !important;
-  }
-
-  .current-song-title {
-    font-size: 0.65rem !important;
-  }
-
-  .current-song-artist {
-    font-size: 0.55rem !important;
-  }
-
-  .turntable-box {
-    flex-direction: row !important;
-    gap: 4px !important;
-    align-items: center !important;
-  }
-
-  .card-frame {
-    height: 100px !important;
-  }
-
-  .tracklist-container {
-    max-height: 120px !important;
-  }
-
-  .tracklist-item {
-    font-size: 0.5rem !important;
-    padding: 1px 2px !important;
-  }
-
-  .filter-btn {
-    padding: 3px 6px !important;
-    font-size: 0.55rem !important;
-  }
-
-  .page-jump-input {
-    font-size: 0.8rem !important;
-    padding: 6px 8px !important;
-  }
-
-  .input-field {
-    font-size: 15px !important;
-    padding: 10px !important;
-  }
-
-  .toast {
-    font-size: 0.75rem !important;
-    padding: 8px 10px !important;
-    bottom: 10px !important;
-    right: 8px !important;
-    left: 8px !important;
-  }
-
-  /* Ensure proper stacking on very small screens */
-  .header-bar {
-    flex-direction: column !important;
-    align-items: stretch !important;
-  }
-
-  .page-number-footer {
-    flex-direction: column !important;
-    align-items: flex-start !important;
   }
 }

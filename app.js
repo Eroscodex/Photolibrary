@@ -291,13 +291,71 @@ function bindEvents() {
   const filters = document.querySelectorAll('.filter-btn');
   filters.forEach(btn => {
     btn.onclick = (e) => {
-      filters.forEach(b => b.classList.remove('active'));
-      e.target.classList.add('active');
-      currentFilter = e.target.getAttribute('data-filter');
+      const nextFilter = e.target.getAttribute('data-filter');
+      currentFilter = nextFilter;
+      syncFilterUI(nextFilter);
       renderScrapbookPages();
     };
   });
 }
+
+function syncFilterUI(filterName) {
+  document.querySelectorAll('.filter-btn').forEach((button) => {
+    const shouldBeActive = button.getAttribute('data-filter') === filterName;
+    button.classList.toggle('active', shouldBeActive);
+  });
+
+  const navMap = {
+    all: 'nav-home',
+    favorites: 'nav-favorites',
+    videos: 'nav-videos',
+    memories: 'nav-memories',
+    photos: 'nav-home'
+  };
+
+  const activeNavId = navMap[filterName] || 'nav-home';
+  document.querySelectorAll('.mobile-bottom-nav .nav-item').forEach((button) => {
+    button.classList.toggle('active', button.id === activeNavId);
+  });
+}
+
+window.handleMobileNavSelection = function(navId) {
+  const navMap = {
+    'nav-home': () => {
+      currentFilter = 'all';
+      syncFilterUI('all');
+      renderScrapbookPages();
+    },
+    'nav-memories': () => {
+      if (!currentUser) {
+        openModal(loginModal);
+        return;
+      }
+
+      const targetPage = Math.max(2, currentPage % 2 === 0 ? currentPage : currentPage + 1);
+      document.getElementById('media-page').value = targetPage;
+      document.getElementById('media-date').valueAsDate = new Date();
+      currentFilter = 'all';
+      syncFilterUI('all');
+      openModal(uploadModal);
+    },
+    'nav-videos': () => {
+      currentFilter = 'videos';
+      syncFilterUI('videos');
+      renderScrapbookPages();
+    },
+    'nav-favorites': () => {
+      currentFilter = 'favorites';
+      syncFilterUI('favorites');
+      renderScrapbookPages();
+    }
+  };
+
+  const handler = navMap[navId];
+  if (handler) {
+    handler();
+  }
+};
 
 function verifyLogin() {
   const email = loginEmail.value.trim().toLowerCase();
