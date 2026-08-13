@@ -181,6 +181,9 @@ function initApp() {
   updateStorageMeter();
   populatePlaylistSelector();
   renderScrapbookPages();
+
+  // Handle window resizing dynamically
+  window.addEventListener('resize', () => renderScrapbookPages());
 }
 
 function applyTheme() {
@@ -361,7 +364,7 @@ function jumpToPage(num) {
 }
 
 function turnPage(direction) {
-  const isMobile = window.innerWidth <= 768;
+  const isMobile = window.innerWidth <= 900;
   const step = isMobile ? 1 : 2;
 
   // Add flip transition overlay
@@ -406,7 +409,7 @@ function getMemoriesOnPage(pageNo) {
 }
 
 function renderScrapbookPages() {
-  const isMobile = window.innerWidth <= 768;
+  const isMobile = window.innerWidth <= 900;
   
   // Hide or show nav elements on extreme limits
   prevBtn.disabled = currentPage <= 1;

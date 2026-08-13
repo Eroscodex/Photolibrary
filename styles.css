@@ -295,6 +295,7 @@ body::after {
 .book {
   position: relative;
   width: 1000px;
+  max-width: 95vw;
   height: 620px;
   background: var(--card-bg);
   border-radius: 12px;
@@ -307,6 +308,7 @@ body::after {
 
 .book.closed {
   width: 500px;
+  max-width: 95vw;
   transform: rotateY(18deg);
   box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35);
 }
@@ -1162,14 +1164,24 @@ input:checked + .slider:before {
 }
 
 /* Responsive Overrides */
-@media (max-width: 1024px) {
-  .book {
-    width: 90vw;
-    height: 580px;
+@media (max-width: 1100px) {
+  .book-page {
+    padding: 25px 30px;
+  }
+  .music-player-container {
+    padding: 12px;
+    margin: 10px 0;
+  }
+  .vinyl-disc {
+    width: 65px;
+    height: 65px;
+  }
+  .tracklist-item {
+    padding: 6px 8px;
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   body {
     padding: 10px;
   }
