@@ -183,7 +183,11 @@ function initApp() {
   renderScrapbookPages();
 
   // Handle window resizing dynamically
-  window.addEventListener('resize', () => renderScrapbookPages());
+  window.addEventListener('resize', () => {
+    renderScrapbookPages();
+    updateBookScale();
+  });
+  updateBookScale();
 }
 
 function applyTheme() {
@@ -219,6 +223,7 @@ function bindEvents() {
     const navContainer = document.querySelector('.nav-controls-container');
     if (navContainer) navContainer.style.display = 'flex';
     renderScrapbookPages();
+    updateBookScale();
   };
 
   closeBookBtn.onclick = () => {
@@ -227,6 +232,7 @@ function bindEvents() {
     closeBookBtn.style.display = 'none';
     const navContainer = document.querySelector('.nav-controls-container');
     if (navContainer) navContainer.style.display = 'none';
+    updateBookScale();
   };
 
   // Auth Triggers
@@ -354,6 +360,7 @@ window.logout = function() {
   
   const navContainer = document.querySelector('.nav-controls-container');
   if (navContainer) navContainer.style.display = 'none';
+  updateBookScale();
 
   // Return to Page 1
   jumpToPage(1);
@@ -371,8 +378,8 @@ function jumpToPage(num) {
 }
 
 function turnPage(direction) {
-  const isMobile = window.innerWidth <= 900;
-  const step = isMobile ? 1 : 2;
+  const isMobile = false;
+  const step = 2;
 
   // Add flip transition overlay
   bookPages.classList.add('page-turning');
@@ -384,7 +391,7 @@ function turnPage(direction) {
   }
 
   // Desktop adjustment: make sure left page index is odd
-  if (!isMobile && currentPage > 1 && currentPage % 2 === 0) {
+  if (currentPage > 1 && currentPage % 2 === 0) {
     currentPage -= 1;
   }
 
@@ -416,60 +423,41 @@ function getMemoriesOnPage(pageNo) {
 }
 
 function renderScrapbookPages() {
-  const isMobile = window.innerWidth <= 900;
+  const isMobile = false; // Always 2-page side-by-side book layout
   
   // Hide or show nav elements on extreme limits
   prevBtn.disabled = currentPage <= 1;
-  nextBtn.disabled = isMobile ? currentPage >= 1000 : currentPage >= 999;
+  nextBtn.disabled = currentPage >= 999;
   prevPageCorner.style.display = currentPage <= 1 ? 'none' : 'block';
-  nextPageCorner.style.display = (isMobile ? currentPage >= 1000 : currentPage >= 999) ? 'none' : 'block';
+  nextPageCorner.style.display = (currentPage >= 999) ? 'none' : 'block';
 
-  if (isMobile) {
-    // Mobile layouts show 1 page at a time
-    leftPageFooterNum.textContent = `Page ${currentPage} of 1000`;
+  // Desktop/Proportional layout shows left (odd) & right (even) pages side by side
+  if (currentPage % 2 === 0 && currentPage > 1) {
+    currentPage -= 1;
+  }
+  
+  leftPageFooterNum.textContent = `Page ${currentPage}`;
+  rightPageFooterNum.textContent = `Page ${currentPage + 1}`;
+
+  const leftAlbum = document.getElementById('left-album-container');
+
+  if (currentPage === 1) {
+    // Left Page 1 is always Static welcome
+    document.querySelector('.welcome-panel').style.display = 'flex';
+    document.querySelector('.book-page-right .album-panel').style.display = 'flex';
+    if (leftAlbum) leftAlbum.style.display = 'none';
     
-    const leftAlbum = document.getElementById('left-album-container');
-    if (currentPage === 1) {
-      document.querySelector('.welcome-panel').style.display = 'flex';
-      document.querySelector('.book-page-right .album-panel').style.display = 'none';
-      if (leftAlbum) leftAlbum.style.display = 'none';
-    } else {
-      document.querySelector('.welcome-panel').style.display = 'none';
-      document.querySelector('.book-page-right .album-panel').style.display = 'flex';
-      if (leftAlbum) leftAlbum.style.display = 'none';
-      
-      // Load current page slots
-      drawPageMedia(currentPage);
-    }
+    // Page 2 contains Right Page contents
+    drawPageMedia(2);
   } else {
-    // Desktop layout shows left (odd) & right (even) pages side by side
-    if (currentPage % 2 === 0 && currentPage > 1) {
-      currentPage -= 1;
-    }
+    // Both Left (currentPage) & Right (currentPage+1) are Album pages.
+    document.querySelector('.welcome-panel').style.display = 'none';
+    document.querySelector('.book-page-right .album-panel').style.display = 'flex';
     
-    leftPageFooterNum.textContent = `Page ${currentPage}`;
-    rightPageFooterNum.textContent = `Page ${currentPage + 1}`;
-
-    const leftAlbum = document.getElementById('left-album-container');
-
-    if (currentPage === 1) {
-      // Left Page 1 is always Static welcome
-      document.querySelector('.welcome-panel').style.display = 'flex';
-      document.querySelector('.book-page-right .album-panel').style.display = 'flex';
-      if (leftAlbum) leftAlbum.style.display = 'none';
-      
-      // Page 2 contains Right Page contents
-      drawPageMedia(2);
-    } else {
-      // Both Left (currentPage) & Right (currentPage+1) are Album pages.
-      document.querySelector('.welcome-panel').style.display = 'none';
-      document.querySelector('.book-page-right .album-panel').style.display = 'flex';
-      
-      // Draw Left Page contents
-      drawLeftPageAlbum(currentPage);
-      // Draw Right Page contents
-      drawPageMedia(currentPage + 1);
-    }
+    // Draw Left Page contents
+    drawLeftPageAlbum(currentPage);
+    // Draw Right Page contents
+    drawPageMedia(currentPage + 1);
   }
 }
 
@@ -1219,4 +1207,8 @@ function escapeHTML(str) {
       '"': '&quot;'
     }[tag] || tag)
   );
+}
+
+function updateBookScale() {
+  // Disabled - mobile responsiveness is handled natively by CSS media query now!
 }

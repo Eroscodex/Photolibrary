@@ -48,6 +48,11 @@
   scrollbar-color: var(--violet-accent) var(--border-color);
 }
 
+html {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
 body {
   font-family: 'Inter', sans-serif;
   background: var(--bg-color);
@@ -92,6 +97,7 @@ body::after {
   flex-direction: column;
   align-items: center;
   gap: 20px;
+  overflow-x: hidden;
 }
 
 /* Header bar styling */
@@ -110,13 +116,18 @@ body::after {
   letter-spacing: -0.5px;
   background: var(--accent-gradient);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-.controls-group {
+.header-menu-content {
   display: flex;
   align-items: center;
   gap: 15px;
+}
+
+.menu-toggle-btn {
+  display: none;
 }
 
 /* Toggle Switch Styling for Theme */
@@ -230,6 +241,7 @@ body::after {
 .page-slider {
   width: 130px;
   -webkit-appearance: none;
+  appearance: none;
   background: var(--border-color);
   height: 4px;
   border-radius: 2px;
@@ -1188,104 +1200,266 @@ input:checked + .slider:before {
 
   .header-bar {
     flex-direction: column;
-    gap: 12px;
+    gap: 8px;
     align-items: flex-start;
-    padding-bottom: 15px;
+    padding-bottom: 10px;
   }
 
-  .controls-group {
+  /* Show Menu Toggle on Mobile */
+  .menu-toggle-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  }
+
+  .menu-toggle-btn:hover {
+    border-color: var(--violet-accent);
+    color: var(--violet-accent);
+  }
+
+  /* Collapsible Menu Drawer */
+  .header-menu-content {
+    display: none;
     width: 100%;
-    justify-content: space-between;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+    margin-top: 10px;
+    border-top: 1px dashed var(--border-color);
+    padding-top: 10px;
+  }
+
+  .header-menu-content.active {
+    display: flex !important;
+  }
+
+  /* Stack and clean sub-controls inside menu */
+  .header-menu-content .header-divider {
+    display: none !important;
+  }
+
+  #owner-header-controls {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+    width: 100% !important;
+    display: none; /* Controlled by JS auth state */
+  }
+
+  #auth-controls {
+    justify-content: center !important;
+    width: 100% !important;
+  }
+
+  .theme-toggle-btn {
+    align-self: center !important;
   }
 
   .book-wrapper {
     min-height: auto;
+    height: auto;
+    padding: 10px 0;
+    perspective: 1500px;
   }
 
-  .book, .book.closed {
-    width: 100% !important;
-    height: auto !important;
-    box-shadow: none !important;
-    border: none !important;
-    background: transparent !important;
+  /* Make the book tall and occupy full width on mobile */
+  .book {
+    width: 95vw !important;
+    height: 520px !important;
     transform: none !important;
+    box-shadow: var(--book-shadow) !important;
+    border: 1px solid var(--border-color) !important;
+    background: var(--card-bg) !important;
+  }
+
+  .book.closed {
+    width: 75vw !important;
+    height: 520px !important;
+    transform: rotateY(10deg) !important;
   }
 
   .book-spine {
-    display: none !important;
+    width: 15px !important;
   }
 
-  .book.closed .book-cover-front {
-    position: static;
-    transform: none !important;
-    width: 100% !important;
-    box-shadow: var(--book-shadow);
-    margin-bottom: 20px;
-  }
-
-  .book.open .book-cover-front {
-    display: none;
-  }
-
-  .book.closed .book-pages {
-    display: none !important;
-  }
-
-  .book.open .book-pages {
-    display: flex !important;
-    opacity: 1;
-  }
-
+  /* Keep pages side-by-side */
   .book-pages {
-    display: flex;
-    flex-direction: column;
-    height: auto !important;
-    border-radius: 8px;
-    box-shadow: var(--book-shadow);
-    border: 1px solid var(--border-color);
-    background: var(--card-bg);
-  }
-
-  .book-pages::after {
-    display: none; /* No middle spine crease on stacked pages */
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    height: 100% !important;
   }
 
   .book-page {
-    width: 100%;
-    height: auto !important;
-    min-height: 480px;
-    overflow: visible !important;
-    border: none !important;
-    border-bottom: 1px solid var(--border-color) !important;
+    padding: 12px 8px !important;
+    font-size: 0.7rem !important;
   }
 
-  .page-corner {
-    display: none !important;
+  /* Prevent Soundtrack title and Edit button collision */
+  .welcome-panel h3, .book-page h3 {
+    font-size: 0.65rem !important;
+    letter-spacing: 0.5px !important;
   }
 
+  #manage-playlist-btn {
+     padding: 2px 6px !important;
+     font-size: 0.6rem !important;
+  }
+
+  /* Shrink turntable player elements to fit */
+  .music-player-container {
+    padding: 8px !important;
+    gap: 6px !important;
+    margin: 4px 0 !important;
+  }
+
+  .turntable-box {
+    gap: 8px !important;
+  }
+
+  .vinyl-disc {
+    width: 50px !important;
+    height: 50px !important;
+  }
+
+  .vinyl-center {
+    width: 14px !important;
+    height: 14px !important;
+  }
+
+  .vinyl-center::after {
+    width: 3px !important;
+    height: 3px !important;
+  }
+
+  .song-details h3 {
+    font-size: 0.75rem !important;
+  }
+
+  .song-details p {
+    font-size: 0.6rem !important;
+  }
+
+  .song-progress-bar {
+    height: 3px !important;
+  }
+
+  .player-controls {
+    gap: 8px !important;
+  }
+
+  .control-btn svg {
+    width: 10px !important;
+    height: 10px !important;
+  }
+
+  #player-time {
+    font-size: 0.55rem !important;
+  }
+
+  /* Shrink tracklist */
+  .tracklist-item {
+    padding: 3px 5px !important;
+    font-size: 0.6rem !important;
+  }
+
+  .tracklist-item .visualizer-bar {
+    width: 2px !important;
+  }
+
+  /* Wrap filter buttons to fit narrow pages */
+  .filter-controls {
+    flex-wrap: wrap !important;
+    gap: 4px !important;
+    margin-bottom: 8px !important;
+  }
+
+  .filter-btn {
+    padding: 3px 6px !important;
+    font-size: 0.58rem !important;
+  }
+
+  /* Cards styling */
   .media-container {
     flex-direction: column !important;
-    gap: 20px !important;
-    height: auto !important;
+    gap: 10px !important;
+    align-items: center !important;
   }
 
   .media-card {
     width: 100% !important;
-    height: auto !important;
-    max-height: none !important;
-    flex: none !important;
+    padding: 8px !important;
+    gap: 5px !important;
   }
 
   .card-frame {
-    aspect-ratio: 4/3 !important;
     height: auto !important;
-    flex: none !important;
-    min-height: auto !important;
+    aspect-ratio: 4/3 !important;
   }
 
-  .nav-controls-container {
-    width: 100%;
-    justify-content: space-between;
+  .card-frame img, .card-frame video {
+    max-height: 130px !important;
+  }
+
+  .media-card h3 {
+    font-size: 0.75rem !important;
+  }
+
+  .media-card p {
+    font-size: 0.65rem !important;
+  }
+
+  .card-badge {
+    font-size: 0.55rem !important;
+    padding: 2px 5px !important;
+  }
+
+  /* Better touch targets for tablet */
+  .btn, .control-btn, .filter-btn {
+    min-height: 42px !important;
+    min-width: 42px !important;
+  }
+
+  /* Improve modal on tablet */
+  .modal-card {
+    max-width: 85vw !important;
+  }
+
+  .input-field {
+    font-size: 16px !important;
+    padding: 10px 12px !important;
+  }
+
+  /* Toast positioning on tablet */
+  .toast {
+    bottom: 20px !important;
+    right: 20px !important;
+  }
+
+  /* Ensure proper header layout */
+  .header-bar:not(.active) {
+    flex-wrap: wrap !important;
+  }
+
+  .brand-title {
+    font-size: 1.2rem !important;
+  }
+
+  /* Book sizing optimization */
+  .book {
+    height: 480px !important;
+  }
+
+  .book.closed {
+    height: 480px !important;
   }
 }
 
@@ -1306,5 +1480,523 @@ input:checked + .slider:before {
   }
   100% {
     height: 100%;
+  }
+}
+
+/* Enhanced Mobile Responsive (max-width: 600px) */
+@media (max-width: 600px) {
+  /* Base mobile adjustments */
+  body {
+    padding: 8px;
+    font-size: 14px;
+  }
+
+  /* Header improvements */
+  .header-bar {
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    gap: 0 !important;
+    padding: 8px 0 !important;
+  }
+
+  .brand-title {
+    font-size: 1rem !important;
+  }
+
+  .header-menu-content {
+    width: 100% !important;
+    margin-top: 8px !important;
+    padding-top: 8px !important;
+  }
+
+  /* Touch targets - minimum 44px for mobile */
+  .menu-toggle-btn,
+  .theme-toggle-btn,
+  .btn,
+  .control-btn,
+  .filter-btn {
+    min-height: 40px !important;
+    min-width: 40px !important;
+    padding: 10px 12px !important;
+  }
+
+  .btn-primary {
+    padding: 12px 16px !important;
+    font-size: 0.9rem !important;
+  }
+
+  /* Modal responsive */
+  .modal-card {
+    max-width: 90vw !important;
+    margin: 0 10px !important;
+    border-radius: 12px !important;
+  }
+
+  .modal-header {
+    padding: 12px 16px !important;
+  }
+
+  .modal-header h3 {
+    font-size: 0.95rem !important;
+  }
+
+  .modal-body {
+    padding: 16px !important;
+    gap: 12px !important;
+  }
+
+  .modal-footer {
+    padding: 12px 16px !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+  }
+
+  /* Form inputs - full width */
+  .input-field {
+    width: 100% !important;
+    padding: 12px !important;
+    font-size: 16px !important; /* Prevents zoom on iOS */
+  }
+
+  .form-group {
+    margin-bottom: 4px !important;
+  }
+
+  /* Page navigation input */
+  .page-jump-wrapper {
+    flex-wrap: wrap !important;
+    width: 100% !important;
+    gap: 8px !important;
+  }
+
+  .page-jump-input {
+    flex: 1 !important;
+    min-width: 60px !important;
+    padding: 8px 10px !important;
+    font-size: 0.9rem !important;
+  }
+
+  .page-slider {
+    width: 100% !important;
+  }
+
+  /* Storage box responsive */
+  .storage-box {
+    width: 100% !important;
+    flex-direction: column !important;
+    gap: 6px !important;
+    align-items: flex-start !important;
+  }
+
+  .storage-track {
+    width: 100% !important;
+  }
+
+  /* Book dimensions for mobile */
+  .book-wrapper {
+    min-height: 400px !important;
+  }
+
+  .book {
+    width: 100vw !important;
+    max-width: 100% !important;
+    height: 450px !important;
+    max-height: 70vh !important;
+    margin: 0 -8px !important;
+    border-radius: 8px !important;
+  }
+
+  .book.closed {
+    width: 95vw !important;
+    height: 450px !important;
+    transform: rotateY(8deg) !important;
+  }
+
+  .book-spine {
+    width: 12px !important;
+  }
+
+  /* Page content optimization */
+  .book-page {
+    padding: 10px 6px !important;
+    font-size: 0.65rem !important;
+  }
+
+  .book-page-left,
+  .book-page-right {
+    border-right: 1px solid var(--border-color) !important;
+  }
+
+  /* Header titles on mobile */
+  .welcome-header h2,
+  .album-header-bar h3 {
+    font-size: 0.8rem !important;
+    margin-bottom: 4px !important;
+  }
+
+  .welcome-header p {
+    font-size: 0.65rem !important;
+  }
+
+  /* Music player ultra-compact */
+  .music-player-container {
+    padding: 6px !important;
+    gap: 4px !important;
+    margin: 2px 0 !important;
+  }
+
+  .turntable-box {
+    flex-direction: column !important;
+    gap: 6px !important;
+    align-items: stretch !important;
+  }
+
+  .vinyl-disc {
+    width: 40px !important;
+    height: 40px !important;
+    align-self: center !important;
+  }
+
+  .vinyl-center {
+    width: 12px !important;
+    height: 12px !important;
+  }
+
+  .song-info {
+    gap: 1px !important;
+  }
+
+  .current-song-title {
+    font-size: 0.7rem !important;
+  }
+
+  .current-song-artist {
+    font-size: 0.6rem !important;
+  }
+
+  .playlist-select {
+    font-size: 0.75rem !important;
+    padding: 8px !important;
+  }
+
+  .player-controls-row {
+    gap: 6px !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+  }
+
+  .control-btn {
+    width: 32px !important;
+    height: 32px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .control-btn svg {
+    width: 14px !important;
+    height: 14px !important;
+  }
+
+  .song-progress-bar {
+    height: 2px !important;
+    min-width: 60px !important;
+    flex: 0 1 auto !important;
+  }
+
+  /* Tracklist compact */
+  .tracklist-container {
+    max-height: 150px !important;
+    overflow-y: auto !important;
+  }
+
+  .tracklist-item {
+    padding: 2px 4px !important;
+    font-size: 0.55rem !important;
+  }
+
+  .tracklist-item .visualizer-bar {
+    width: 1.5px !important;
+    height: auto !important;
+  }
+
+  /* Album filters and cards */
+  .album-header-bar {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 8px !important;
+    margin-bottom: 10px !important;
+  }
+
+  .filter-group {
+    width: 100% !important;
+    flex-wrap: wrap !important;
+    gap: 4px !important;
+  }
+
+  .filter-btn {
+    padding: 4px 8px !important;
+    font-size: 0.6rem !important;
+    flex: 0 1 auto !important;
+  }
+
+  .media-container {
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
+
+  .media-card {
+    width: 100% !important;
+    padding: 6px !important;
+    gap: 4px !important;
+  }
+
+  .card-frame {
+    aspect-ratio: 16/9 !important;
+    height: 120px !important;
+  }
+
+  .card-details {
+    gap: 2px !important;
+  }
+
+  .card-title {
+    font-size: 0.75rem !important;
+    line-height: 1.2 !important;
+  }
+
+  .card-caption {
+    font-size: 0.6rem !important;
+    line-height: 1.2 !important;
+  }
+
+  .card-meta {
+    font-size: 0.55rem !important;
+  }
+
+  .card-badge {
+    top: 8px !important;
+    right: 8px !important;
+    font-size: 0.5rem !important;
+    padding: 2px 4px !important;
+  }
+
+  .card-actions {
+    gap: 6px !important;
+    margin-top: 3px !important;
+    padding-top: 4px !important;
+  }
+
+  .action-icon-btn {
+    width: 28px !important;
+    height: 28px !important;
+    padding: 2px !important;
+  }
+
+  .action-icon-btn svg {
+    width: 14px !important;
+    height: 14px !important;
+  }
+
+  /* Blank page placeholder */
+  .blank-page-placeholder {
+    padding: 20px 10px !important;
+    gap: 8px !important;
+  }
+
+  .blank-page-placeholder svg {
+    width: 28px !important;
+    height: 28px !important;
+  }
+
+  .blank-page-placeholder h4 {
+    font-size: 0.8rem !important;
+  }
+
+  .blank-page-placeholder p {
+    font-size: 0.65rem !important;
+  }
+
+  /* Navigation controls */
+  .nav-controls-container {
+    gap: 8px !important;
+    margin-top: 10px !important;
+  }
+
+  .nav-controls-container .btn {
+    flex: 1 !important;
+    font-size: 0.8rem !important;
+    padding: 10px 8px !important;
+  }
+
+  /* Toast notifications */
+  .toast {
+    bottom: 15px !important;
+    right: 12px !important;
+    left: 12px !important;
+    max-width: none !important;
+    width: auto !important;
+    font-size: 0.8rem !important;
+    padding: 10px 12px !important;
+  }
+
+  /* Owner controls stack vertically */
+  #owner-header-controls {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 8px !important;
+  }
+
+  .header-divider {
+    display: none !important;
+  }
+
+  #auth-controls {
+    justify-content: center !important;
+    width: 100% !important;
+  }
+
+  /* Upload dropzone */
+  .upload-dropzone {
+    padding: 20px 12px !important;
+  }
+
+  .upload-dropzone svg {
+    width: 28px !important;
+    height: 28px !important;
+  }
+
+  .upload-dropzone p {
+    font-size: 0.75rem !important;
+  }
+
+  /* Page footer */
+  .page-number-footer {
+    padding-top: 10px !important;
+    font-size: 0.65rem !important;
+    gap: 8px !important;
+    flex-wrap: wrap !important;
+  }
+
+  /* Close button improvements */
+  #close-book-btn {
+    width: 100% !important;
+    padding: 10px !important;
+    font-size: 0.8rem !important;
+  }
+}
+
+/* Ultra-small phone screens (max-width: 375px) */
+@media (max-width: 375px) {
+  body {
+    padding: 4px !important;
+    font-size: 13px !important;
+  }
+
+  .app-container {
+    gap: 12px !important;
+  }
+
+  .brand-title {
+    font-size: 0.9rem !important;
+  }
+
+  .book {
+    width: 100vw !important;
+    margin: 0 -4px !important;
+    height: 400px !important;
+  }
+
+  .book.closed {
+    width: 90vw !important;
+    height: 400px !important;
+  }
+
+  .book-page {
+    padding: 8px 4px !important;
+    font-size: 0.6rem !important;
+  }
+
+  .btn, .control-btn {
+    padding: 8px 10px !important;
+    font-size: 0.75rem !important;
+  }
+
+  .btn-primary {
+    padding: 10px 12px !important;
+    font-size: 0.8rem !important;
+  }
+
+  .modal-card {
+    max-width: 95vw !important;
+  }
+
+  .music-player-container {
+    padding: 4px !important;
+  }
+
+  .vinyl-disc {
+    width: 36px !important;
+    height: 36px !important;
+  }
+
+  .current-song-title {
+    font-size: 0.65rem !important;
+  }
+
+  .current-song-artist {
+    font-size: 0.55rem !important;
+  }
+
+  .turntable-box {
+    flex-direction: row !important;
+    gap: 4px !important;
+    align-items: center !important;
+  }
+
+  .card-frame {
+    height: 100px !important;
+  }
+
+  .tracklist-container {
+    max-height: 120px !important;
+  }
+
+  .tracklist-item {
+    font-size: 0.5rem !important;
+    padding: 1px 2px !important;
+  }
+
+  .filter-btn {
+    padding: 3px 6px !important;
+    font-size: 0.55rem !important;
+  }
+
+  .page-jump-input {
+    font-size: 0.8rem !important;
+    padding: 6px 8px !important;
+  }
+
+  .input-field {
+    font-size: 15px !important;
+    padding: 10px !important;
+  }
+
+  .toast {
+    font-size: 0.75rem !important;
+    padding: 8px 10px !important;
+    bottom: 10px !important;
+    right: 8px !important;
+    left: 8px !important;
+  }
+
+  /* Ensure proper stacking on very small screens */
+  .header-bar {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+
+  .page-number-footer {
+    flex-direction: column !important;
+    align-items: flex-start !important;
   }
 }

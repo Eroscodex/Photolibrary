@@ -19,32 +19,17 @@
     
     <!-- Top Minimalist Header Bar -->
     <header class="header-bar">
-      <div class="brand-title">Karl & Lezil</div>
-      
-      <div class="controls-group">
+      <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+        <div class="brand-title">Karl & Lezil</div>
         
-        <!-- Owner-only Controls (Hidden for public/visitor view) -->
-        <div id="owner-header-controls" style="display: none; align-items: center; gap: 15px;">
-          <!-- Storage indicator -->
-          <div class="storage-box">
-            <span>Storage</span>
-            <div class="storage-track">
-              <div class="storage-fill" id="storage-fill"></div>
-            </div>
-            <span id="storage-pct">0%</span>
-          </div>
-
-          <!-- Jump to Page Navigation -->
-          <div class="page-jump-wrapper">
-            <label for="page-input">Page</label>
-            <input type="number" id="page-input" class="page-jump-input" min="1" max="1000" value="1">
-            <input type="range" id="page-slider" class="page-slider" min="1" max="1000" value="1">
-          </div>
-          
-          <!-- Subtle Vertical Divider -->
-          <div class="header-divider" style="width: 1px; height: 20px; background: var(--border-color);"></div>
-        </div>
-
+        <!-- Menu Toggle Button for Mobile -->
+        <button class="menu-toggle-btn" id="menu-toggle-btn" title="Toggle Menu">
+          <svg viewBox="0 0 24 24" style="width: 22px; height: 22px; fill: currentColor;"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+        </button>
+      </div>
+      
+      <!-- Collapsible Menu Content -->
+      <div class="header-menu-content" id="header-menu-content">
         <!-- Theme Toggle Button -->
         <button class="theme-toggle-btn" id="theme-toggle-btn" title="Toggle Theme">
           <!-- Sun Icon -->
@@ -61,6 +46,8 @@
         <div id="auth-controls" style="display: flex; gap: 8px;">
           <button class="btn btn-primary" id="open-login-btn">Login</button>
         </div>
+
+        <!-- Close Book Button (only shown when book is open) -->
         <button class="btn" id="close-book-btn" style="display: none;" title="Close Book">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle;">
             <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
@@ -69,6 +56,27 @@
           </svg>
           Close Book
         </button>
+
+        <!-- Owner-only Controls (Hidden for public/visitor view) -->
+        <div id="owner-header-controls" style="display: none; align-items: center; gap: 15px;">
+          <div class="header-divider" style="width: 1px; height: 20px; background: var(--border-color);"></div>
+          <!-- Storage indicator -->
+          <div class="storage-box">
+            <span>Storage</span>
+            <div class="storage-track">
+              <div class="storage-fill" id="storage-fill"></div>
+            </div>
+            <span id="storage-pct">0%</span>
+          </div>
+
+          <div class="header-divider" style="width: 1px; height: 20px; background: var(--border-color);"></div>
+          <!-- Jump to Page Navigation -->
+          <div class="page-jump-wrapper">
+            <label for="page-input">Page</label>
+            <input type="number" id="page-input" class="page-jump-input" min="1" max="1000" value="1">
+            <input type="range" id="page-slider" class="page-slider" min="1" max="1000" value="1">
+          </div>
+        </div>
       </div>
     </header>
 
