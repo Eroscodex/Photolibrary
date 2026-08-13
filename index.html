@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Karl & Lezil Photo Library</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="dark-theme"> <!-- Default to Dark Theme -->
+
+  <!-- YouTube Player API Element (Hidden) -->
+  <div id="yt-player-container">
+    <div id="yt-player"></div>
+  </div>
+
+  <div class="app-container">
+    
+    <!-- Top Minimalist Header Bar -->
+    <header class="header-bar">
+      <div class="brand-title">Karl & Lezil</div>
+      
+      <div class="controls-group">
+        
+        <!-- Owner-only Controls (Hidden for public/visitor view) -->
+        <div id="owner-header-controls" style="display: none; align-items: center; gap: 15px;">
+          <!-- Storage indicator -->
+          <div class="storage-box">
+            <span>Storage</span>
+            <div class="storage-track">
+              <div class="storage-fill" id="storage-fill"></div>
+            </div>
+            <span id="storage-pct">0%</span>
+          </div>
+
+          <!-- Jump to Page Navigation -->
+          <div class="page-jump-wrapper">
+            <label for="page-input">Page</label>
+            <input type="number" id="page-input" class="page-jump-input" min="1" max="1000" value="1">
+            <input type="range" id="page-slider" class="page-slider" min="1" max="1000" value="1">
+          </div>
+          
+          <!-- Subtle Vertical Divider -->
+          <div class="header-divider" style="width: 1px; height: 20px; background: var(--border-color);"></div>
+        </div>
+
+        <!-- Theme Toggle Button -->
+        <button class="theme-toggle-btn" id="theme-toggle-btn" title="Toggle Theme">
+          <!-- Sun Icon -->
+          <svg class="sun-icon" viewBox="0 0 24 24">
+            <path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58c-.39-.39-1.03-.39-1.41 0s-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37c-.39-.39-1.03-.39-1.41 0s-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41l-1.06-1.06zm1.06-12.37c-.39-.39-1.03-.39-1.41 0s-.39 1.02 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L19.42 4.58zM5.99 18.01l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06c.39-.39.39-1.03 0-1.41s-1.03-.39-1.41 0z"/>
+          </svg>
+          <!-- Moon Icon -->
+          <svg class="moon-icon" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 3a6.364 6.364 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+          </svg>
+        </button>
+
+        <!-- Auth Button Group -->
+        <div id="auth-controls" style="display: flex; gap: 8px;">
+          <button class="btn btn-primary" id="open-login-btn">Login</button>
+        </div>
+        <button class="btn" id="close-book-btn" style="display: none;" title="Close Book">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle;">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="9" y1="9" x2="15" y2="15"></line>
+            <line x1="15" y1="9" x2="9" y2="15"></line>
+          </svg>
+          Close Book
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Book Structure -->
+    <div class="book-wrapper">
+      <div class="book closed" id="book">
+        
+        <!-- Closed Book Spine -->
+        <div class="book-spine"></div>
+        
+        <!-- Front Cover Page -->
+        <div class="book-cover-front" id="book-cover">
+          <div class="cover-content" style="text-align: center; position: relative; z-index: 3;">
+            <h1 class="cover-title" style="font-family: 'Playfair Display', serif; font-size: 2.4rem; margin-bottom: 8px; color: #fceaba; text-shadow: 0 2px 5px rgba(0,0,0,0.6), 0 0 10px rgba(212,175,55,0.5);">Karl & Lezil</h1>
+            <p class="cover-subtitle" style="font-size: 0.85rem; letter-spacing: 2px; color: #cfc5a9; text-transform: uppercase; font-weight: 500; text-shadow: 0 1px 2px rgba(0,0,0,0.5);">Photo & Video Library</p>
+            <div class="cover-decoration" style="width: 60px; height: 2px; background: linear-gradient(to right, transparent, #d4af37, transparent); margin: 25px auto;"></div>
+            <button class="btn btn-primary" id="open-book-btn" style="font-weight: 600; padding: 10px 24px; margin: 0 auto; display: flex; background: linear-gradient(135deg, #fbeaba 0%, #d4af37 100%); border: none; color: #201b10; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">Open Library</button>
+          </div>
+        </div>
+
+        <div class="book-pages" id="book-pages">
+          
+          <!-- LEFT PAGE: Music player and tracklist -->
+          <div class="book-page book-page-left">
+            <div class="welcome-panel" style="display: flex; flex-direction: column; height: 100%; gap: 12px;">
+              
+              <!-- Turntable Playlist Widget -->
+              <div class="music-player-container" style="margin-top: 10px;">
+                <div class="turntable-box">
+                  <div class="vinyl-disc" id="vinyl-disc">
+                    <div class="vinyl-center">
+                      <div class="vinyl-center-pin"></div>
+                    </div>
+                  </div>
+                  
+                  <div class="song-info">
+                    <span class="current-song-title" id="current-song-title">14</span>
+                    <span class="current-song-artist" id="current-song-artist">Silent Sanctuary</span>
+                  </div>
+                </div>
+
+                <!-- Custom audio controls -->
+                <div class="player-controls-row">
+                  <button class="control-btn" id="play-btn" title="Play">
+                    <!-- Play -->
+                    <svg id="play-svg" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                    <!-- Pause (Hidden) -->
+                    <svg id="pause-svg" viewBox="0 0 24 24" style="display:none;"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+                  </button>
+
+                  <div class="song-progress-bar" id="song-progress-bar">
+                    <div class="song-progress-fill" id="song-progress-fill"></div>
+                  </div>
+                  
+                  <span id="player-time" style="font-size:0.75rem; color:var(--text-muted); min-width:60px; text-align:right;">0:00 / 0:00</span>
+                </div>
+
+                <!-- Hidden Playlist Selector (Kept for Javascript compatibility) -->
+                <select class="playlist-select" id="playlist-select" title="Choose song" style="display: none;">
+                  <!-- Tracks dynamically loaded -->
+                </select>
+              </div>
+
+              <!-- Tracklist Header with Edit Button -->
+              <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed var(--border-color); padding-bottom: 6px; margin-top: 5px;">
+                <h3 style="font-size: 0.75rem; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-muted); font-weight: 700; margin: 0;">Soundtrack</h3>
+                <button class="btn btn-primary" id="manage-playlist-btn" style="padding: 4px 10px; font-size: 0.7rem; display: none; border-radius: 4px;" title="Manage Playlist">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 2px;">
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                  </svg>
+                  Edit List
+                </button>
+              </div>
+
+              <!-- Tracklist printed list -->
+              <div id="page1-tracklist" style="display: flex; flex-direction: column; gap: 4px; flex: 1; overflow-y: auto; padding-right: 4px; min-height: 0;">
+                <!-- Populated dynamically -->
+              </div>
+
+              <!-- Page Footer -->
+              <div class="page-number-footer" style="margin-top: auto; padding-top: 10px;">
+                <span id="left-page-footer-num">Page 1</span>
+                <span>Karl & Lezil</span>
+              </div>
+            </div>
+            <div class="page-corner page-corner-left" id="prev-page-corner"></div>
+          </div>
+
+          <!-- RIGHT PAGE: Album display of photos/videos -->
+          <div class="book-page book-page-right">
+            <div class="album-panel">
+              
+              <!-- Filters and Upload (shown when logged in) -->
+              <div class="album-header-bar">
+                <div class="filter-group">
+                  <button class="filter-btn active" data-filter="all">All</button>
+                  <button class="filter-btn" data-filter="favorites">Favorites</button>
+                  <button class="filter-btn" data-filter="photos">Photos</button>
+                  <button class="filter-btn" data-filter="videos">Videos</button>
+                </div>
+                
+              </div>
+
+              <!-- Album dynamic display grid -->
+              <div class="media-container" id="media-container">
+                <!-- Populated dynamically via JS -->
+              </div>
+
+              <!-- Page Footer -->
+              <div class="page-number-footer">
+                <span>Karl & Lezil</span>
+                <span id="right-page-footer-num">Page 2</span>
+              </div>
+            </div>
+            <div class="page-corner page-corner-right" id="next-page-corner"></div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Navigation Controls -->
+    <div class="nav-controls-container">
+      <button class="btn" id="prev-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 4px; vertical-align: middle;">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+        Previous Page
+      </button>
+      <button class="btn" id="next-btn">
+        Next Page
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-left: 4px; vertical-align: middle;">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </button>
+    </div>
+
+  </div>
+
+  <!-- AUTH / LOGIN MODAL -->
+  <div class="modal-overlay" id="login-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Library Access</h3>
+        <button class="modal-close" id="close-login-modal">&times;</button>
+      </div>
+      <form id="login-form" onsubmit="return false;">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="login-email">Email Address</label>
+            <input type="email" id="login-email" class="input-field" placeholder="email@example.com" required autocomplete="username">
+          </div>
+          <div class="form-group">
+            <label for="login-password">Password</label>
+            <input type="password" id="login-password" class="input-field" placeholder="••••••••" required autocomplete="current-password">
+          </div>
+          <div class="form-error" id="login-error"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn" id="cancel-login-btn">Cancel</button>
+          <button type="submit" class="btn btn-primary">Login</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- CREATE / UPLOAD MEMORY MODAL -->
+  <div class="modal-overlay" id="upload-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Upload New Memory</h3>
+        <button class="modal-close" id="close-upload-modal">&times;</button>
+      </div>
+      <form id="upload-form" onsubmit="return false;">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="media-title">Title</label>
+            <input type="text" id="media-title" class="input-field" placeholder="Name of this memory" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="media-caption">Caption</label>
+            <textarea id="media-caption" class="input-field" rows="2" placeholder="Write a short description..." required style="resize: none;"></textarea>
+          </div>
+          
+          <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <div>
+              <label for="media-date">Date</label>
+              <input type="date" id="media-date" class="input-field" required style="width: 100%;">
+            </div>
+            <div>
+              <label for="media-page">Book Page (2 - 1000)</label>
+              <input type="number" id="media-page" class="input-field" min="2" max="1000" value="2" required style="width: 100%;">
+            </div>
+          </div>
+
+          <!-- File selector box -->
+          <div class="form-group">
+            <label>Select Photo or Video</label>
+            <div class="upload-dropzone" id="upload-dropzone">
+              <svg viewBox="0 0 24 24">
+                <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/>
+              </svg>
+              <p>Drag files here or <span>browse</span></p>
+              <input type="file" id="media-file" accept="image/*,video/*" style="display: none;" required>
+            </div>
+            <div class="upload-preview-box" id="upload-preview-box"></div>
+          </div>
+
+          <!-- Private option toggle switch -->
+          <div class="toggle-row">
+            <div class="toggle-details">
+              <span>Private Memory</span>
+              <span>Only visible to the uploader</span>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="media-privacy">
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn" id="cancel-upload-btn">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Memory</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- EDIT DETAILS MODAL -->
+  <div class="modal-overlay" id="edit-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Edit Details</h3>
+        <button class="modal-close" id="close-edit-modal">&times;</button>
+      </div>
+      <form id="edit-form" onsubmit="return false;">
+        <input type="hidden" id="edit-media-id">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="edit-media-title">Title</label>
+            <input type="text" id="edit-media-title" class="input-field" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="edit-media-caption">Caption</label>
+            <textarea id="edit-media-caption" class="input-field" rows="2" required style="resize: none;"></textarea>
+          </div>
+          
+          <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <div>
+              <label for="edit-media-date">Date</label>
+              <input type="date" id="edit-media-date" class="input-field" required style="width: 100%;">
+            </div>
+            <div>
+              <label for="edit-media-page">Book Page (2 - 1000)</label>
+              <input type="number" id="edit-media-page" class="input-field" min="2" max="1000" required style="width: 100%;">
+            </div>
+          </div>
+
+          <!-- Privacy option toggle switch -->
+          <div class="toggle-row">
+            <div class="toggle-details">
+              <span>Private Memory</span>
+              <span>Only visible to the uploader</span>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="edit-media-privacy">
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn" id="cancel-edit-btn">Cancel</button>
+          <button type="submit" class="btn btn-primary">Update Details</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- PLAYLIST MANAGER MODAL -->
+  <div class="modal-overlay" id="playlist-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Manage Playlist</h3>
+        <button class="modal-close" id="close-playlist-modal">&times;</button>
+      </div>
+      <div class="modal-body" style="padding: 15px 20px;">
+        <!-- List of tracks with delete / edit -->
+        <div id="playlist-manager-list" style="display: flex; flex-direction: column; gap: 8px; max-height: 180px; overflow-y: auto; margin-bottom: 12px; border-bottom: 1px solid var(--border-color); padding-bottom: 12px;">
+          <!-- Populated dynamically -->
+        </div>
+        
+        <!-- Add track form inside modal -->
+        <div style="border-top: 1px dashed var(--border-color); padding-top: 12px;">
+          <h4 style="font-size: 0.75rem; font-weight: 600; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px;">Add New Song</h4>
+          <form id="modal-playlist-add-form" onsubmit="return false;" style="display: flex; flex-direction: column; gap: 8px;">
+            <div class="form-group">
+              <input type="text" id="modal-add-song-title" class="input-field" placeholder="Song Title - Artist" required style="padding: 8px 10px; font-size: 0.8rem;">
+            </div>
+            <div class="form-group" style="display: flex; flex-direction: row; gap: 8px;">
+              <input type="text" id="modal-add-song-url" class="input-field" placeholder="YouTube Video URL" required style="flex-grow: 1; padding: 8px 10px; font-size: 0.8rem;">
+              <button type="submit" class="btn btn-primary" style="padding: 8px 14px; font-size: 0.8rem;">Add</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="modal-footer" style="padding: 10px 20px;">
+        <button type="button" class="btn" id="close-playlist-mgr-btn">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div class="toast" id="toast-notification">
+    <svg class="toast-icon" viewBox="0 0 24 24">
+      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+    </svg>
+    <span id="toast-message"></span>
+  </div>
+
+  <!-- YouTube Iframe API Dynamically loaded in JS -->
+  <script src="app.js"></script>
+</body>
+</html>
