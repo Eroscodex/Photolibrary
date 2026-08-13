@@ -3,17 +3,17 @@
 
 /* CSS Variables */
 :root {
-  /* Light Theme (Vintage Sepia/Warm Paper) */
-  --bg-color: #eae4d8;
-  --text-color: #2b2520;
-  --text-muted: #7a6e65;
-  --card-bg: #fdfbf7;
-  --border-color: #d6c8b3;
-  --page-bg: #f4ecd8;
-  --spine-shadow: linear-gradient(to right, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.01) 30%, rgba(0,0,0,0.0) 50%, rgba(0,0,0,0.01) 70%, rgba(0,0,0,0.08) 100%);
-  --book-shadow: 0 15px 35px rgba(43, 37, 32, 0.15);
-  --paper-shadow: inset 0 0 20px rgba(43, 37, 32, 0.04);
-  --input-bg: #fcfaf4;
+  /* Light Theme (Vintage Pastel Violet/Lavender) */
+  --bg-color: #e5e0f5;
+  --text-color: #281e45;
+  --text-muted: #706591;
+  --card-bg: #faf9ff;
+  --border-color: #cebfeb;
+  --page-bg: #efeafc;
+  --spine-shadow: linear-gradient(to right, rgba(123,95,194,0.15) 0%, rgba(0,0,0,0.01) 30%, rgba(0,0,0,0.0) 50%, rgba(0,0,0,0.01) 70%, rgba(123,95,194,0.15) 100%);
+  --book-shadow: 0 15px 35px rgba(40, 30, 69, 0.12);
+  --paper-shadow: inset 0 0 20px rgba(123, 95, 194, 0.05);
+  --input-bg: #f5f3ff;
   
   /* Shared variables (Faded 90s Periwinkle/Indigo accents) */
   --blue-accent: #4a78c2;
