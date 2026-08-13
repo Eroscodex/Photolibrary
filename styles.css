@@ -1407,7 +1407,30 @@ input:checked + .slider:before {
   }
 
   .card-actions {
-    display: none !important;
+    display: flex !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    position: absolute !important;
+    right: 6px !important;
+    bottom: 6px !important;
+    z-index: 3 !important;
+    gap: 4px !important;
+  }
+
+  .action-icon-btn {
+    width: 26px !important;
+    height: 26px !important;
+    min-width: 26px !important;
+    min-height: 26px !important;
+    padding: 0 !important;
+    border-radius: 999px !important;
+    background: rgba(17, 24, 39, 0.8) !important;
+    border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  }
+
+  .action-icon-btn svg {
+    width: 12px !important;
+    height: 12px !important;
   }
 
   .card-badge {
