@@ -810,6 +810,8 @@ function updateStorageMeter() {
    ========================================================================== */
 
 function populatePlaylistSelector() {
+  const currentSelectedId = playlistSelect.value || (playlist[0] ? playlist[0].id : '');
+
   playlistSelect.innerHTML = '';
   playlist.forEach((track) => {
     const opt = document.createElement('option');
@@ -817,6 +819,10 @@ function populatePlaylistSelector() {
     opt.textContent = track.title;
     playlistSelect.appendChild(opt);
   });
+
+  if (currentSelectedId) {
+    playlistSelect.value = currentSelectedId;
+  }
 
   playlistSelect.onchange = (e) => {
     playTrack(e.target.value);

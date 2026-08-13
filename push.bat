@@ -1,6 +1,6 @@
 @echo off
 echo ===================================================
-echo   Karl & Lezil Photo Library GitHub Push Helper
+echo   Karl ^& Lezil Photo Library GitHub Push Helper
 echo ===================================================
 echo.
 echo Initializing Git...
@@ -15,8 +15,8 @@ echo Linking to remote repository...
 git remote remove origin 2>nul
 git remote add origin https://github.com/Eroscodex/Photolibrary.git
 echo.
-echo Pushing files to GitHub...
-git push -u origin main
+echo Pushing files to GitHub (Force Push)...
+git push -u origin main --force
 echo.
 echo ===================================================
 echo   Upload complete! Close this window.
