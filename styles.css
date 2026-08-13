@@ -1202,12 +1202,12 @@ input:checked + .slider:before {
     min-height: auto;
   }
 
-  .book {
+  .book, .book.closed {
     width: 100% !important;
     height: auto !important;
-    box-shadow: none;
-    border: none;
-    background: transparent;
+    box-shadow: none !important;
+    border: none !important;
+    background: transparent !important;
     transform: none !important;
   }
 
