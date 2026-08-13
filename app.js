@@ -11,36 +11,14 @@ const ALLOWED_USERS = [
 // Default playlist seeds
 const DEFAULT_PLAYLIST = [
   { id: '3MFMBC2P8Oc', title: '14 - Silent Sanctuary' },
-  { id: '0p-tM6UfVjU', title: 'Kundiman - Silent Sanctuary' },
-  { id: 'YqNlhU253gA', title: 'Pasensya Ka Na - Silent Sanctuary' }
+  { id: 'dwteXfJ0EcU', title: 'Kundiman - Silent Sanctuary' },
+  { id: 'uF1svYwD074', title: 'Pasensya Ka Na - Silent Sanctuary' },
+  { id: 'Ws7xKa990-Y', title: 'Alipin - Shamrock' }
 ];
 
 // Initial seeder memories
 const DEFAULT_MEMORIES = [
-  {
-    id: 'seed-1',
-    title: 'Our Journey Begins',
-    caption: 'Welcome to our digital journal! Page 2 of 1,000 pages of our sweet memories together. 💙',
-    date: '2026-01-01',
-    pageNumber: 2,
-    fileData: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="100%" height="100%"><rect width="100%" height="100%" fill="%23eff6ff"/><path d="M200 230 C120 160 100 100 160 80 C190 70 200 90 200 90 C200 90 210 70 240 80 C300 100 280 160 200 230 Z" fill="%233b82f6"/><text x="50%" y="87%" font-family="sans-serif" font-weight="bold" font-size="14" fill="%238b5cf6" text-anchor="middle">Memory Page 2</text></svg>',
-    fileType: 'image',
-    privacy: 'public',
-    uploadedBy: 'karl',
-    isFavorite: true
-  },
-  {
-    id: 'seed-2',
-    title: 'A Secret Letter',
-    caption: 'This is a private memory. Log in as Lezil to view this card on Page 3! 🤫💜',
-    date: '2026-02-14',
-    pageNumber: 3,
-    fileData: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="100%" height="100%"><rect width="100%" height="100%" fill="%23f5f3ff"/><path d="M150 130 L250 130 L250 200 L150 200 Z" fill="%238b5cf6"/><path d="M150 130 L200 165 L250 130" fill="none" stroke="%23111827" stroke-width="2"/><text x="50%" y="85%" font-family="sans-serif" font-weight="bold" font-size="14" fill="%233b82f6" text-anchor="middle">Private Entry Page 3</text></svg>',
-    fileType: 'image',
-    privacy: 'private',
-    uploadedBy: 'lezil',
-    isFavorite: false
-  }
+  
 ];
 
 // App States
