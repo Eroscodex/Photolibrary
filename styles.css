@@ -1112,7 +1112,7 @@ input:checked + .slider:before {
 
 /* Page navigations under book */
 .nav-controls-container {
-  display: flex;
+  display: none; /* Hidden by default when the book is closed */
   justify-content: space-between;
   width: 100%;
   margin-top: 15px;

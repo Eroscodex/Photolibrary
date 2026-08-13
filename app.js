@@ -216,6 +216,8 @@ function bindEvents() {
     bookNode.classList.remove('closed');
     bookNode.classList.add('open');
     closeBookBtn.style.display = 'flex';
+    const navContainer = document.querySelector('.nav-controls-container');
+    if (navContainer) navContainer.style.display = 'flex';
     renderScrapbookPages();
   };
 
@@ -223,6 +225,8 @@ function bindEvents() {
     bookNode.classList.remove('open');
     bookNode.classList.add('closed');
     closeBookBtn.style.display = 'none';
+    const navContainer = document.querySelector('.nav-controls-container');
+    if (navContainer) navContainer.style.display = 'none';
   };
 
   // Auth Triggers
@@ -347,6 +351,9 @@ window.logout = function() {
   bookNode.classList.remove('open');
   bookNode.classList.add('closed');
   closeBookBtn.style.display = 'none';
+  
+  const navContainer = document.querySelector('.nav-controls-container');
+  if (navContainer) navContainer.style.display = 'none';
 
   // Return to Page 1
   jumpToPage(1);
