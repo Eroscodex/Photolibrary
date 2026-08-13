@@ -1239,6 +1239,7 @@ input:checked + .slider:before {
   .book-pages {
     display: flex;
     flex-direction: column;
+    height: auto !important;
     border-radius: 8px;
     box-shadow: var(--book-shadow);
     border: 1px solid var(--border-color);
